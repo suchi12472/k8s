@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: sql-deployment
+  namespace: my-sql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+        name: pod-1
+        labels:
+          app: demo
+    spec:
+      containers:
+        - name: cont-1
+          image: mysql:oraclelinux9
+          volumeMounts:
+            - name: sql-storage
+              mountPath: /var/lib/mysql
+          ports:
+            - containerPort: 3306
+      volumes:
+        - name: sql-storage
+          persistentVolumeClaim: 
+            claimName: sql-pvc
